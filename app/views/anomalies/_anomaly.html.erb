@@ -1,0 +1,52 @@
+<%# app/views/anomalies/_anomaly.html.erb
+    Rendered server-side and pushed over WebSockets by Turbo Streams.
+    The severity CSS class is resolved at render time so no JS is needed. %>
+
+<%
+  severity_classes = {
+    "critical" => "border-red-500    bg-red-950   text-red-300",
+    "high"     => "border-orange-500 bg-orange-950 text-orange-300",
+    "medium"   => "border-yellow-500 bg-yellow-950 text-yellow-300",
+    "low"      => "border-gray-500   bg-gray-900   text-gray-300"
+  }
+  badge_classes = {
+    "critical" => "bg-red-500    text-white",
+    "high"     => "bg-orange-500 text-white",
+    "medium"   => "bg-yellow-500 text-black",
+    "low"      => "bg-gray-600   text-white"
+  }
+  sev   = anomaly.severity.to_s
+  color = severity_classes.fetch(sev, severity_classes["low"])
+  badge = badge_classes.fetch(sev, badge_classes["low"])
+%>
+
+<%= tag.div id: dom_id(anomaly),
+            class: "border-l-4 rounded px-4 py-3 flex items-start gap-4 #{color}" do %>
+
+  <%# Severity badge %>
+  <span class="text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wider shrink-0 <%= badge %>">
+    <%= sev %>
+  </span>
+
+  <%# Core fields %>
+  <div class="flex-1 min-w-0">
+    <div class="flex items-center gap-3 flex-wrap">
+      <span class="text-xs opacity-60">
+        <%= anomaly.created_at.strftime("%H:%M:%S.%3N") %>
+      </span>
+      <code class="text-sm"><%= anomaly.source_ip %></code>
+      <% if anomaly.destination_ip.present? %>
+        <span class="text-xs opacity-40">→</span>
+        <code class="text-sm"><%= anomaly.destination_ip %></code>
+      <% end %>
+      <% if anomaly.protocol.present? %>
+        <span class="text-xs opacity-60 uppercase"><%= anomaly.protocol %></span>
+      <% end %>
+      <span class="text-xs opacity-60">
+        score: <strong><%= "%.4f" % anomaly.score %></strong>
+      </span>
+    </div>
+    <p class="mt-1 text-sm opacity-80 truncate"><%= anomaly.description %></p>
+  </div>
+
+<% end %>
