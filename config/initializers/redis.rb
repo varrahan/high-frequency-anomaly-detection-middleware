@@ -9,7 +9,6 @@ $redis_pool = ConnectionPool.new(size: POOL_SIZE, timeout: POOL_TIMEOUT) do
   Redis.new(
     url: REDIS_URL, 
     reconnect_attempts: 3,
-    ssl_params: REDIS_URL.start_with?("rediss://") ? { verify_mode: OpenSSL::SSL::VERIFY_NONE } : {}
   )
 end
 
