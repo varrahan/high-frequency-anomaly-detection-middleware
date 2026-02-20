@@ -1,0 +1,23 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+  username: user
+  password: password
+  host: 127.0.0.1
+  port: 5432
+
+development:
+  <<: *default
+  database: anomaly_platform_development
+
+test:
+  <<: *default
+  database: anomaly_platform_test
+
+production:
+  <<: *default
+  database: anomaly_platform_production
+  username: anomaly_platform
+  password: <%= ENV["ANOMALY_PLATFORM_DATABASE_PASSWORD"] %>
