@@ -41,7 +41,7 @@ class AnomalyIngester
     }
 
     $redis_pool.with do |conn|
-      conn.xadd(STREAM_NAME, "*", metadata, maxlen: STREAM_MAX_LEN, approximate: true)
+      conn.xadd(STREAM_NAME, metadata, id: "*", maxlen: STREAM_MAX_LEN, approximate: true)
     end
 
     OK_RESPONSE
