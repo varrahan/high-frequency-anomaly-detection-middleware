@@ -1,6 +1,6 @@
 *.env*
 .vscode*
-
+*/build*
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 
