@@ -11,5 +11,6 @@ gem "turbo-rails"
 gem "importmap-rails"
 
 group :development, :test do
+  gem 'brakeman', require: false
   gem "debug"
 end
