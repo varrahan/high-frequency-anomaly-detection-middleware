@@ -1,0 +1,53 @@
+<%# app/views/dashboards/show.html.erb
+    Primary monitoring dashboard.
+    turbo_stream_from opens a WebSocket subscription to the "anomalies"
+    channel; any broadcast targeting that channel will be appended/prepended
+    into #anomalies_list without a page reload. %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anomaly Detection Dashboard</title>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+</head>
+<body class="bg-gray-950 text-gray-100 font-mono">
+
+  <%# Open the WebSocket channel – Turbo handles reconnection automatically. %>
+  <%= turbo_stream_from "anomalies" %>
+
+  <header class="border-b border-gray-800 px-6 py-4 flex items-center justify-between">
+    <h1 class="text-xl font-bold tracking-widest text-emerald-400">
+      ⬡ ANOMALY DETECTION PLATFORM
+    </h1>
+    <div class="flex gap-6 text-sm">
+      <span class="text-gray-400">
+        Total: <strong class="text-white"><%= @total_count %></strong>
+      </span>
+      <span class="text-gray-400">
+        Critical: <strong class="text-red-400"><%= @critical_count %></strong>
+      </span>
+    </div>
+  </header>
+
+  <main class="p-6">
+    <div class="mb-4 text-xs text-gray-500 uppercase tracking-widest">
+      Live Threat Feed — Last 100 Events
+    </div>
+
+    <%# Target div for Turbo Stream prepend broadcasts from Anomaly model. %>
+    <div id="anomalies_list" class="space-y-2">
+      <%= render @anomalies %>
+    </div>
+
+    <% if @anomalies.empty? %>
+      <p class="text-center text-gray-600 py-16">
+        Awaiting telemetry…
+      </p>
+    <% end %>
+  </main>
+
+</body>
+</html>
