@@ -52,6 +52,7 @@ jobs:
       REDIS_URL: redis://localhost:6379/0
       ANOMALY_WORKER_TOKEN: test-worker-token
       INGESTION_TOKEN: test-ingest-token
+      CABLE_TOKEN: test-cable-token
 
     steps:
       - uses: actions/checkout@v4
