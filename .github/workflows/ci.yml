@@ -58,4 +58,31 @@ jobs:
           bundler-cache: true
       - run: bundle exec rails db:test:prepare
       - run: bundle exec rails test
+
+  test-cpp-worker:
+    name: C++ Analyzer Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install System Dependencies
+        # Grabs the exact libraries your README requires, plus Google Test
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake libhiredis-dev libcurl4-openssl-dev nlohmann-json3-dev libgtest-dev
+
+      - name: Configure CMake
+        working-directory: ./external_workers/analyzer
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
+
+      - name: Build C++ Worker and Tests
+        working-directory: ./external_workers/analyzer
+        run: cmake --build build --parallel
+
+      - name: Run Google Tests
+        working-directory: ./external_workers/analyzer/build
+        # ctest will automatically find and run the test executable
+        run: ctest --output-on-failure
       
