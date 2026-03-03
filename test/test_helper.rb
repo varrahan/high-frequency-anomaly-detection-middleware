@@ -1,4 +1,5 @@
 require_relative "../config/environment"
+require "mocha/minitest"
 require "rails/test_help"
 
 module ActiveSupport
