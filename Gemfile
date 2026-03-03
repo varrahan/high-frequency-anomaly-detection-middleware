@@ -8,6 +8,7 @@ gem "pg", "~> 1.1"
 gem "puma", "~> 7.2"
 gem "redis", "~> 5.0"
 gem "turbo-rails"
+gem "image_processing", "~> 1.2"
 gem "importmap-rails"
 
 group :development, :test do
