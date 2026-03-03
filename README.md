@@ -209,12 +209,12 @@ cmake --build build --parallel
 
 You need three terminals.
 
-**Terminal 1 — Rails:**
+**Terminal 1 - Rails:**
 ```bash
 bundle exec rails server -p 3000
 ```
 
-**Terminal 2 — C++ worker:**
+**Terminal 2 - C++ worker:**
 ```bash
 cd external_workers/analyzer
 set -a && source ../../.env && set +a
@@ -230,7 +230,7 @@ Expected output:
 [main] Entering main loop…
 ```
 
-**Terminal 3 — Send a test packet:**
+**Terminal 3 - Send a test packet:**
 ```bash
 curl -X POST http://localhost:3000/ingest \
   -H "Authorization: Bearer dev-ingest-token" \
@@ -249,7 +249,7 @@ curl -X POST http://localhost:3000/ingest \
   }'
 ```
 
-Open `http://localhost:3000` — the anomaly should appear on the dashboard in real time without a page refresh.
+Open `http://localhost:3000` - the anomaly should appear on the dashboard in real time without a page refresh.
 
 ---
 
