@@ -1,8 +1,6 @@
 development:
-  adapter: async
-
-test:
-  adapter: test
+  adapter: redis
+  url: <%= ENV.fetch("REDIS_URL", "redis://localhost:6379/0") %>
 
 production:
   adapter: redis
