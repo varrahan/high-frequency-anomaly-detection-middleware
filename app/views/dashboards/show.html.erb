@@ -15,7 +15,9 @@
 <body class="bg-gray-950 text-gray-100 font-mono">
 
   <%# Open the WebSocket channel – Turbo handles reconnection automatically. %>
-  <%= turbo_stream_from "anomalies" %>
+  <%= turbo_stream_from "anomalies",
+    channel: Turbo::StreamsChannel,
+    signed_stream_name: Turbo::StreamsChannel.signed_stream_name("anomalies") %>
 
   <header class="border-b border-gray-800 px-6 py-4 flex items-center justify-between">
     <h1 class="text-xl font-bold tracking-widest text-emerald-400">
