@@ -25,3 +25,6 @@ target_link_libraries(analyzer PRIVATE ${HIREDIS_LIB})
 find_package(CURL REQUIRED)
 target_link_libraries(analyzer PRIVATE CURL::libcurl)
 install(TARGETS analyzer DESTINATION bin)
+
+enable_testing() 
+add_subdirectory(tests)
