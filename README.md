@@ -96,6 +96,7 @@ Sensor / curl
 | CMake | 3.16+ | Worker build system |
 | libhiredis-dev | any | Redis client for C++ |
 | libcurl4-openssl-dev | any | HTTP POST from worker |
+| libgtest-dev | any | C++ Worker tests |
 | nlohmann-json3-dev | any | JSON parsing in worker |
 | Docker + Compose | any | Running Postgres + Redis |
 
