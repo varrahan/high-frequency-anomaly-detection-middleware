@@ -14,7 +14,7 @@ module ApplicationCable
     private
 
     def verify_cookie!
-      cable_token  = ENV.fetch("CABLE_TOKEN", nil)
+      cable_token = ENV.fetch("CABLE_TOKEN", nil)
       return "anonymous" if cable_token.nil?
 
       provided = cookies.signed[:cable_token].to_s
