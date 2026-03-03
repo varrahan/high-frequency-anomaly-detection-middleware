@@ -207,6 +207,7 @@ bundle exec rails server -p 3000
 **Terminal 2 — C++ worker:**
 ```bash
 cd external_workers/analyzer
+# Make .env variables available the current shell process and all child processes
 set -a && source ../../.env && set +a
 ./build/analyzer
 ```
