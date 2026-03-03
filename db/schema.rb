@@ -10,20 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_02_19_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_19_120000) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "anomalies", force: :cascade do |t|
-    t.string "source_ip", null: false
-    t.string "destination_ip"
-    t.string "protocol", limit: 16
-    t.string "severity", null: false
-    t.decimal "score", precision: 8, scale: 6, null: false
-    t.text "description", null: false
-    t.text "raw_payload"
-    t.datetime "detected_at"
     t.datetime "created_at", null: false
+    t.text "description", null: false
+    t.string "destination_ip"
+    t.datetime "detected_at"
+    t.string "protocol", limit: 16
+    t.text "raw_payload"
+    t.decimal "score", precision: 8, scale: 6, null: false
+    t.string "severity", null: false
+    t.string "source_ip", null: false
     t.datetime "updated_at", null: false
     t.index ["created_at"], name: "index_anomalies_on_created_at"
     t.index ["severity"], name: "index_anomalies_on_severity"
