@@ -12,29 +12,29 @@ Sensor / curl
      │  POST /ingest  (Bearer token)
      ▼
 ┌─────────────────────────────────────┐
-│  Rack Middleware (Ingester)         │  ← Position 0 in stack, bypasses Rails router
-│  Authenticates -> XADD Redis Stream  │  ← Returns 200 OK in microseconds
+│  Rack Middleware (Ingester)         │  <- Position 0 in stack, bypasses Rails router
+│  Authenticates -> XADD Redis Stream │  <- Returns 200 OK in microseconds
 └─────────────────────────────────────┘
      │
      │  Redis Stream  (anomaly:raw)
      ▼
 ┌─────────────────────────────────────┐
-│  C++ Analyzer Worker                │  ← XREADGROUP + thread pool
-│  Feature extraction + scoring       │  ← Shannon entropy, port heuristics, TTL, SYN flood
-│  HTTP POST results -> Rails API      │
+│  C++ Analyzer Worker                │  <- XREADGROUP + thread pool
+│  Feature extraction + scoring       │  <- Shannon entropy, port heuristics, TTL, SYN flood
+│  HTTP POST results -> Rails API     │
 └─────────────────────────────────────┘
      │
      │  POST /api/v1/anomalies  (X-Worker-Token)
      ▼
 ┌─────────────────────────────────────┐
-│  Rails API Controller               │  ← Validates + persists to PostgreSQL
-│  Anomaly Model                      │  ← after_create_commit -> Turbo broadcast
+│  Rails API Controller               │  <- Validates + persists to PostgreSQL
+│  Anomaly Model                      │  <- after_create_commit -> Turbo broadcast
 └─────────────────────────────────────┘
      │
      │  Action Cable WebSocket
      ▼
 ┌─────────────────────────────────────┐
-│  Browser Dashboard                  │  ← turbo_stream_from "anomalies"
+│  Browser Dashboard                  │  <- turbo_stream_from "anomalies"
 │  Live DOM updates, no page refresh  │
 └─────────────────────────────────────┘
 ```
