@@ -1,4 +1,4 @@
-class AnomalyIngester
+class Ingester
   INGESTION_PATH    = ENV.fetch("INGESTION_PATH",    "/ingest")
   STREAM_NAME       = ENV.fetch("REDIS_STREAM_NAME", "anomaly:raw")
   INGEST_TOKEN      = ENV.fetch("INGESTION_TOKEN",   "dev-ingest-token")
@@ -53,6 +53,6 @@ class AnomalyIngester
 
   private
 
-  def log_warn(msg)  = Rails.logger&.warn("[AnomalyIngester] #{msg}")
-  def log_error(msg) = Rails.logger&.error("[AnomalyIngester] #{msg}")
+  def log_warn(msg)  = Rails.logger&.warn("[Ingester] #{msg}")
+  def log_error(msg) = Rails.logger&.error("[Ingester] #{msg}")
 end
