@@ -1,9 +1,19 @@
-# Add inside external_workers/analyzer/CMakeLists.txt
-enable_testing()
+add_executable(run_tests 
+    test_parser.cpp
+    ../packet_parser.cpp
+)
+
+if(nlohmann_json_FOUND)
+    target_link_libraries(run_tests PRIVATE nlohmann_json::nlohmann_json)
+else()
+    target_include_directories(run_tests PRIVATE ${CMAKE_SOURCE_DIR}/external)
+endif()
+
 find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
+target_include_directories(run_tests PRIVATE ${GTEST_INCLUDE_DIRS})
+target_link_libraries(run_tests PRIVATE GTest::gtest_main GTest::gtest pthread)
+target_include_directories(run_tests PRIVATE ${HIREDIS_INCLUDE})
+target_link_libraries(run_tests PRIVATE ${HIREDIS_LIB} CURL::libcurl)
 
-add_executable(run_tests tests/test_parser.cpp packet_parser.cpp)
-target_link_libraries(run_tests ${GTEST_LIBRARIES} pthread nlohmann_json::nlohmann_json)
-
-add_test(NAME AnalyzerTests COMMAND run_tests)
+include(GoogleTest)
+gtest_discover_tests(run_tests)
