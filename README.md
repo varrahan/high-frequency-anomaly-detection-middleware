@@ -186,7 +186,16 @@ bundle exec rails db:migrate:status
 
 ---
 
-### 5. Build the C++ worker
+### 5. Install Debian dependencies for C++ worker support
+
+```bash
+sudo apt-get update
+sudo apt-get install build-essential cmake libhiredis-dev libcurl4-openssl-dev nlohmann-json3-dev libgtest-dev
+```
+
+---
+
+### 6. Build the C++ worker
 
 ```bash
 cd external_workers/analyzer
