@@ -244,6 +244,36 @@ Open `http://localhost:3000` — the anomaly should appear on the dashboard in r
 
 ---
 
+## Testing
+
+This project includes separate test suites for the Rails API/Middleware and the C++ Worker.
+
+### Ruby Backend Ingestion Tests
+
+The Rails test suite verifies the API controllers, models, Action Cable broadcasting, and the high-speed Rack ingestion middleware.
+
+Ensure your test database schema is synced, then execute the suite:
+```bash
+bundle exec rails db:test:prepare
+bundle exec rails test
+
+```
+
+### C++ Worker Parsing Tests
+
+The C++ tests verify the packet parsing logic, feature extraction accuracy, and mathematical bounds of the scoring algorithms.
+
+Navigate to the analyzer directory, configure CMake for testing, and run ctest:
+```bash
+cd external_workers/analyzer
+cmake -B build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build --parallel
+cd build
+ctest --output-on-failure
+```
+
+---
+
 ## Anomaly Scoring
 
 The C++ worker applies an additive heuristic scoring model. Scores are normalised to `[0.0, 1.0]`.
