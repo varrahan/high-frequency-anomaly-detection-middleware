@@ -13,7 +13,7 @@ Sensor / curl
      ▼
 ┌─────────────────────────────────────┐
 │  Rack Middleware (Ingester)         │  ← Position 0 in stack, bypasses Rails router
-│  Authenticates → XADD Redis Stream  │  ← Returns 200 OK in microseconds
+│  Authenticates -> XADD Redis Stream  │  ← Returns 200 OK in microseconds
 └─────────────────────────────────────┘
      │
      │  Redis Stream  (anomaly:raw)
@@ -21,14 +21,14 @@ Sensor / curl
 ┌─────────────────────────────────────┐
 │  C++ Analyzer Worker                │  ← XREADGROUP + thread pool
 │  Feature extraction + scoring       │  ← Shannon entropy, port heuristics, TTL, SYN flood
-│  HTTP POST results → Rails API      │
+│  HTTP POST results -> Rails API      │
 └─────────────────────────────────────┘
      │
      │  POST /api/v1/anomalies  (X-Worker-Token)
      ▼
 ┌─────────────────────────────────────┐
 │  Rails API Controller               │  ← Validates + persists to PostgreSQL
-│  Anomaly Model                      │  ← after_create_commit → Turbo broadcast
+│  Anomaly Model                      │  ← after_create_commit -> Turbo broadcast
 └─────────────────────────────────────┘
      │
      │  Action Cable WebSocket
@@ -112,7 +112,7 @@ docker compose up -d
 
 Verify both are reachable:
 ```bash
-redis-cli -h 127.0.0.1 -p 6379 ping   # → PONG
+redis-cli -h 127.0.0.1 -p 6379 ping   # -> PONG
 psql -h localhost -U postgres -d postgres -c "SELECT 1"
 ```
 
@@ -161,9 +161,9 @@ BLOCK_MS=200
 
 Generate the secrets:
 ```bash
-bundle exec rails secret        # → paste into SECRET_KEY_BASE
-openssl rand -hex 32            # → paste into ANOMALY_WORKER_TOKEN
-openssl rand -hex 32            # → paste into INGESTION_TOKEN
+bundle exec rails secret        # -> paste into SECRET_KEY_BASE
+openssl rand -hex 32            # -> paste into ANOMALY_WORKER_TOKEN
+openssl rand -hex 32            # -> paste into INGESTION_TOKEN
 ```
 
 ---
@@ -217,7 +217,6 @@ bundle exec rails server -p 3000
 **Terminal 2 — C++ worker:**
 ```bash
 cd external_workers/analyzer
-# Make .env variables available the current shell process and all child processes
 set -a && source ../../.env && set +a
 ./build/analyzer
 ```
