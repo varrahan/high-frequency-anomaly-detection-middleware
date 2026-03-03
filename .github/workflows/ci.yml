@@ -26,7 +26,7 @@ jobs:
         run: bin/bundler-audit
 
   test-ruby:
-    name: Ruby Anomaly Detection Tests
+    name: Ruby Backend Ingestion Tests
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -62,7 +62,7 @@ jobs:
       - run: bundle exec rails test
 
   test-cpp-worker:
-    name: C++ Analyzer Tests
+    name: C++ Worker Parsing Tests
     runs-on: ubuntu-latest
 
     steps:
