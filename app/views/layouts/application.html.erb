@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Anomaly Detection</title>
+    <% if ENV["CABLE_TOKEN"].present? %>
+      <meta name="cable-token" content="<%= ENV["CABLE_TOKEN"] %>">
+    <% end %>
     <script src="https://cdn.tailwindcss.com"></script>
     <%= javascript_importmap_tags %>
   </head>
