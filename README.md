@@ -13,7 +13,7 @@ Sensor / curl
      ▼
 ┌─────────────────────────────────────┐
 │  Rack Middleware (AnomalyIngester)  │  ← Position 0 in stack, bypasses Rails router
-│  Authenticates → XADD Redis Stream │  ← Returns 200 OK in microseconds
+│  Authenticates → XADD Redis Stream  │  ← Returns 200 OK in microseconds
 └─────────────────────────────────────┘
      │
      │  Redis Stream  (anomaly:raw)
