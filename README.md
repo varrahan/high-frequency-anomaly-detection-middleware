@@ -144,6 +144,7 @@ SECRET_KEY_BASE=           # bundle exec rails secret
 # Shared secrets
 ANOMALY_WORKER_TOKEN=      # openssl rand -hex 32
 INGESTION_TOKEN=           # openssl rand -hex 32
+CABLE_TOKEN=               # openssl rand -hex 32
 
 # Ingestion middleware
 INGESTION_PATH=/ingest
