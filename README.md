@@ -180,7 +180,7 @@ bundle install
 ```bash
 bundle exec rails db:create
 bundle exec rails db:migrate
-bundle exec rails db:migrate:status   # confirm "up"
+bundle exec rails db:migrate:status
 ```
 
 ---
