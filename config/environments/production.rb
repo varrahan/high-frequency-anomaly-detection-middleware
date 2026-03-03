@@ -7,6 +7,7 @@ Rails.application.configure do
 
   config.action_cable.url    = ENV.fetch("REDIS_URL", "redis://localhost:6379/0")
   config.action_cable.allowed_request_origins = [
+    "http://localhost:3000",
     /http:\/\/localhost(:\d+)?/,
     /http:\/\/127\.0\.0\.1(:\d+)?/
   ]
