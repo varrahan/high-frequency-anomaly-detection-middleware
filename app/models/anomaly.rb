@@ -12,10 +12,10 @@ class Anomaly < ApplicationRecord
 
   private
 
-  def broadcast_anomaly(
-    broadcast_prepend_to  
+  def broadcast_anomaly
+    broadcast_prepend_to(
       "anomalies", 
-      target: "anomalies_list",  
+      target: "anomalies_list", 
       partial: "anomalies/anomaly", 
       locals:  { anomaly: self }
     )
