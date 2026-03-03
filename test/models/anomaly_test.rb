@@ -1,6 +1,8 @@
 require "test_helper"
 
 class AnomalyTest < ActiveSupport::TestCase
+  include ActionCable::TestHelper
+
   test "is valid with proper attributes" do
     anomaly = Anomaly.new(
       source_ip: "10.0.0.1", 
@@ -21,10 +23,11 @@ class AnomalyTest < ActiveSupport::TestCase
       destination_ip: "10.0.0.2", 
       protocol: "TCP",
       score: 0.9, 
-      severity: "critical"
+      severity: "critical",
+      description: "Suspicious port 4444",
     )
     
-    assert_broadcast_on("anomalies", capture: true) do
+    assert_broadcasts("anomalies", 1) do
       anomaly.save!
     end
   end
