@@ -7,7 +7,7 @@ Bundler.require(*Rails.groups)
 module AnomalyPlatform
   class Application < Rails::Application
     config.load_defaults 7.1
-    config.middleware.insert_before 0, AnomalyIngester
+    config.middleware.insert_before 0, Ingester
     config.action_cable.cable = {
       "adapter" => "redis",
       "url"     => ENV.fetch("REDIS_URL", "redis://localhost:6379/0")
