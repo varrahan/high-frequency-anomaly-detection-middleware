@@ -12,7 +12,7 @@ Sensor / curl
      │  POST /ingest  (Bearer token)
      ▼
 ┌─────────────────────────────────────┐
-│  Rack Middleware (AnomalyIngester)  │  ← Position 0 in stack, bypasses Rails router
+│  Rack Middleware (Ingester)         │  ← Position 0 in stack, bypasses Rails router
 │  Authenticates → XADD Redis Stream  │  ← Returns 200 OK in microseconds
 └─────────────────────────────────────┘
      │
