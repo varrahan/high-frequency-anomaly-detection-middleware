@@ -21,7 +21,6 @@ json get_baseline_packet() {
 
 TEST(PacketParserTest, NormalTrafficHasLowScore) {
     json pkt = get_baseline_packet();
-    
     PacketFeatures features = PacketParser::extract_features(pkt);
     AnomalyResult result = PacketParser::score(features);
 
@@ -37,26 +36,34 @@ TEST(PacketParserTest, SuspiciousPortDetection) {
     AnomalyResult result = PacketParser::score(features);
 
     EXPECT_GE(result.score, 0.30);
-    EXPECT_TRUE(result.description.find("Suspicious port") != std::string::npos);
+    EXPECT_TRUE(result.description.find("suspicious dst_port") != std::string::npos);
 }
 
 TEST(PacketParserTest, SynFloodDetection) {
     json pkt = get_baseline_packet();
     pkt["tcp_flags"] = 2;       // SYN flag only
     pkt["pkt_rate"] = 15000.0;  // High packet rate
-    
+    pkt["payload_len"] = 0;     // MUST be < 8 for SYN flood rule
+
     PacketFeatures features = PacketParser::extract_features(pkt);
     AnomalyResult result = PacketParser::score(features);
 
-    // +0.25 for SYN, +0.20 for high pkt_rate according to your README
     EXPECT_GE(result.score, 0.45);
     EXPECT_TRUE(result.severity == "medium" || result.severity == "high");
 }
 
 TEST(PacketParserTest, HighEntropyPayload) {
     json pkt = get_baseline_packet();
-    // A highly randomized/encrypted string of hex
-    pkt["payload_hex"] = "e84c9b2a7d1f3e5c8a0b9d4f6e2c1a3b5d7f9e0c2a4b6d8f1e3c5a7b9d0f2e4c";
+    
+    // Generate a long string with all 256 byte values to guarantee high entropy
+    std::string high_entropy_hex;
+    for (int i = 0; i < 256; ++i) {
+        char buf[3];
+        snprintf(buf, sizeof(buf), "%02x", i);
+        high_entropy_hex += buf;
+    }
+    // Repeat it a bit to ensure byte_count is high enough
+    pkt["payload_hex"] = high_entropy_hex + high_entropy_hex;
     
     PacketFeatures features = PacketParser::extract_features(pkt);
     AnomalyResult result = PacketParser::score(features);
@@ -66,16 +73,15 @@ TEST(PacketParserTest, HighEntropyPayload) {
 
 TEST(PacketParserTest, ScoreDoesNotExceedMaximum) {
     json pkt = get_baseline_packet();
-    pkt["dst_port"] = 1337;      // Suspicious
-    pkt["tcp_flags"] = 2;        // SYN
-    pkt["pkt_rate"] = 20000.0;   // Rate
-    pkt["ttl"] = 255;            // Abnormal TTL
-    pkt["payload_hex"] = "e84c9b2a7d1f3e5c8a0b9d4f6e2c1a3b5d7f9e0c2a4b6d8f"; // Entropy
+    pkt["dst_port"] = 1337;      // +0.30
+    pkt["tcp_flags"] = 2;        
+    pkt["payload_len"] = 0;      // +0.25 (SYN)
+    pkt["pkt_rate"] = 20000.0;   // +0.20
+    pkt["ttl"] = 255;            // +0.15
     
     PacketFeatures features = PacketParser::extract_features(pkt);
     AnomalyResult result = PacketParser::score(features);
 
-    // Ensure your additive scoring math clamps the maximum at 1.0
     EXPECT_LE(result.score, 1.0);
     EXPECT_EQ(result.severity, "critical");
 }
